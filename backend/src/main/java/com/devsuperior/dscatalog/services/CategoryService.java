@@ -1,11 +1,13 @@
 package com.devsuperior.dscatalog.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.devsuperior.dscatalog.entities.Category;
+import com.devsuperior.dscatalog.CategoryDTO;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 
 @Service
@@ -13,11 +15,13 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository repository;
 	
-	public List<Category> findAll() {
-		return repository.findAll();
+	@Transactional(readOnly = true)
+	public List<CategoryDTO> findAll() {
+		List<CategoryDTO> list = repository.findAll().stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+		return list;
 	}
 	
-	public Category findById(Long id) {
-		return repository.findById(id).get();
+	public CategoryDTO findById(Long id) {
+		return new CategoryDTO(repository.findById(id).get());
 	}
 }
