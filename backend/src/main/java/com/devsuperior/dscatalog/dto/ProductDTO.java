@@ -1,7 +1,12 @@
 package com.devsuperior.dscatalog.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 
 public class ProductDTO implements Serializable {
@@ -12,17 +17,21 @@ public class ProductDTO implements Serializable {
 	private String description;
 	private Double price;
 	private String imgUrl;
+	private Instant date;
+	
+	private List<CategoryDTO> categories = new ArrayList<>(); 
 	
 	public ProductDTO() {
 		
 	}
 
-	public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+	public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.imgUrl = imgUrl;
+		this.date = date;
 	}
 	
 	public ProductDTO(Product p) {
@@ -31,6 +40,12 @@ public class ProductDTO implements Serializable {
 		this.description = p.getDescription();
 		this.price = p.getPrice();
 		this.imgUrl = p.getImgUrl();
+		this.date = p.getDate();
+	}
+	
+	public ProductDTO(Product p, Set<Category> categories) {
+		this(p);
+		categories.forEach(x -> this.categories.add(new CategoryDTO(x)));
 	}
 	
 	public Long getId() {
@@ -71,5 +86,17 @@ public class ProductDTO implements Serializable {
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public Instant getDate() {
+		return date;
+	}
+
+	public void setDate(Instant date) {
+		this.date = date;
+	}
+
+	public List<CategoryDTO> getCategories() {
+		return categories;
 	}
 }
