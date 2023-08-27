@@ -1,4 +1,4 @@
-package com.devsuperior.dscatalog;
+package com.devsuperior.dscatalog.dto;
 
 import java.io.Serializable;
 

@@ -31,6 +31,7 @@ public class Category implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updatedAt;
 	
+	
 	//private List<Product> products = new ArrayList<>();
 	
 	public Category() {
