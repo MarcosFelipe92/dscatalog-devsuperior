@@ -2,7 +2,6 @@ package com.devsuperior.dscatalog.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ public class CategoryService {
 		return list.map(x -> new CategoryDTO(x));
 	}
 	
-	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		return new CategoryDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found")));
 	}
@@ -53,10 +51,11 @@ public class CategoryService {
 	}
 
 	public void delete(Long id) {
+		if(!repository.existsById(id)) {
+			throw new ResourceNotFoundException("id " + id + " not found");
+		}
 		try {
 			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("id " + id + " not found");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
